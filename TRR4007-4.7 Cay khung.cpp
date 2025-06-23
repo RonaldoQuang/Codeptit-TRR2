@@ -1,22 +1,18 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 struct Canh{
-	int u, v, g;
+	int u, v, w;
 };
 typedef struct Canh canh;
-int n, k, a[101][101], dT=0, cnt=0;
+int n, k, dT=0, truoc[101], sz[101];
+vector<canh> ve;
 vector<pair<int,int>> v;
-vector<canh> T;
-vector<bool> vs(n+1,false);
-int truoc[101], sz[101];
 bool cmp(canh a, canh b){
-	if(a.g==b.g){
-		if(a.u==b.u){
-			return a.v<b.v;
-		}
-		return a.u<b.u;
+	if(a.w==b.w){
+		if(a.u==b.u) return a.v<b.v;
+		return a.u<b.u; 
 	}
-	return a.g<b.g;
+	return a.w<b.w;
 }
 int find(int v){
 	if(v==truoc[v]) return v;
@@ -33,17 +29,17 @@ bool unit(int a, int b){
 }
 void kruscal(canh a[]){
 	int i=0;
-	while(T.size()<n-1&&v.size()>0){
+	while(ve.size()<n-1&&v.size()>0){
 		v.erase(v.begin()+i);
 		if(unit(a[i].u,a[i].v)){
-			T.push_back({a[i].u,a[i].v,a[i].g});
-			dT+=a[i].g;
+			dT+=a[i].w;
+			ve.push_back({a[i].u,a[i].v,a[i].w});
 		}
 		++i;
 	}
-	if(T.size()==n-1){
+	if(ve.size()==n-1){
 		cout << dT << endl;
-		for(auto x:T) cout << x.u << " " << x.v << " " << x.g << endl;
+		for(auto x:ve) cout << x.u << " " << x.v << " " << x.w << endl;
 	}
 	else cout << 0;
 }
@@ -53,7 +49,7 @@ int main(){
 	cin >> n >> k;
 	canh a[k];
 	for(int i=0;i<k;i++){
-		cin >> a[i].u >> a[i].v >> a[i].g;
+		cin >> a[i].u >> a[i].v >> a[i].w;
 		v.push_back({a[i].u,a[i].v});
 	}
 	for(int i=1;i<=n;i++){

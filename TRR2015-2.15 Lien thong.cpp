@@ -14,6 +14,27 @@
 //1
 
 //2
+//Input
+//1
+//4
+//0 1 0 1
+//1 0 1 0
+//0 1 0 0
+//1 0 0 0
+
+//2
+//4
+//0 1 0 1
+//1 0 1 0
+//0 1 0 0
+//1 0 0 0
+//Output
+//2 2 1 1
+
+//4 3
+//1 2
+//1 4
+//2 3
 #include <bits/stdc++.h>
 using namespace std;
 int c[101][101], n;
@@ -33,6 +54,7 @@ int DFS(vector<int> a[101], int x){
 				st.push(s);
 				st.push(a[s][i]);
 				v.push_back(a[s][i]);
+				break;
 			}
 		}
 	}

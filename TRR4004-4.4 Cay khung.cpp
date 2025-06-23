@@ -1,47 +1,45 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 struct Canh{
-	int u, v, g;
+	int u, v, w;
 };
 typedef struct Canh canh;
-int n, s, a[101][101], dT=0;
-vector<canh> v, v1;
-vector<bool> vs(n+1,false);
+int n, s, dT=0;
+int vs[101];
+vector<canh> v, ve;
 bool cmp(canh a, canh b){
-	if(a.g==b.g){
-		if(a.u==b.u){
-			return a.v<b.v;
-		}
-		return a.u<b.u;
+	if(a.w==b.w){
+		if(a.u==b.u) return a.v<b.v;
+		return a.u<b.u; 
 	}
-	return a.g<b.g;
+	return a.w<b.w;
 }
 void prim(){
-	vs[s]=true;
-	while(v1.size()<n-1){
+	vs[s]=1;
+	while(ve.size()<n-1){
 		for(auto x:v){
-			if((vs[x.u]&&!vs[x.v])||(!vs[x.u]&&vs[x.v])){
-				dT+=x.g;
-				v1.push_back({x.u,x.v,x.g});
-				vs[x.u]=vs[x.v]=true;
+			if(!vs[x.u]&&vs[x.v]||vs[x.u]&&!vs[x.v]){
+				dT+=x.w;
+				vs[x.u]=vs[x.v]=1;
+				ve.push_back({x.u,x.v,x.w});
 				break;
 			}
 		}
 	}
-	if(v1.size()==n-1){
+	if(ve.size()==n-1){
 		cout << dT << endl;
-	    for(auto x:v1) cout << x.u << " " << x.v << " " << x.g << endl;
-	}
-	else cout << 0;
+		for(auto x:ve) cout << x.u << " " << x.v << " " << x.w << endl;
+ 	}
+ 	else cout << 0;
 }
 int main(){
-    freopen("CK.INP","r",stdin);
+	freopen("CK.INP","r",stdin);
 	freopen("CK.OUT","w",stdout);
 	cin >> n >> s;
 	for(int i=1;i<=n;i++){
 		for(int j=1;j<=n;j++){
-			cin >> a[i][j];
-			if(a[i][j]>0&&a[i][j]<=50&&i<j) v.push_back({i,j,a[i][j]}); 
+			int x; cin >> x;
+			if(x>0&&x<=50) v.push_back({i,j,x});
 		}
 	}
 	sort(v.begin(),v.end(),cmp);

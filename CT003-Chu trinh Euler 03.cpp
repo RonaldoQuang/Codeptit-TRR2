@@ -1,100 +1,76 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-int a[101][101], b[101][101], n;
-int chuaxet[101];
-int BFS(int i){
-	queue<int> q;
-	q.push(i);
-	vector<int> v;
-	v.push_back(i);
-	chuaxet[i]=0;
-	while(!q.empty()){
-		int s=q.front();
-		q.pop();
+int t, n, u, cx=1;
+int a[101][101], b[101][101], vs[101];
+vector<int> v;
+void dfs(int i){
+	vs[i]=1;
+	for(int j=1;j<=n;j++){
+		if(b[i][j]&&!vs[j]){
+			++cx;
+			dfs(j);
+		}
+	}
+}
+void ktra(){
+	map<int,int> mp, ma;
+	for(int i=1;i<=n;i++){
 		for(int j=1;j<=n;j++){
-			if(b[s][j]==1&&chuaxet[j]==1){
-				b[j][s]=0;
-				chuaxet[j]=0;
-				q.push(j);
-				v.push_back(j);
+			if(a[i][j]){
+				mp[i]++;
+				ma[j]++;
 			}
 		}
 	}
-	return v.size();
+	int cnt=0, cnt1=0, cnt2=0;
+	for(int i=1;i<=n;i++){
+		if(mp[i]==ma[i]) ++cnt;
+		else if(mp[i]-ma[i]==1) ++cnt1;
+		else if(ma[i]-mp[i]==1) ++cnt2;
+	}
+	dfs(1);
+	if(cx==n){
+		if(cnt==n) cout << 1;
+		else if(cnt1==1&&cnt2==1&&cnt==n-2) cout << 2;
+		else cout << 0;
+	}
+	else cout << 0;
 }
-void EC(int x){
+void EC(int u){
 	stack<int> st;
-	vector<int> v;
-	st.push(x);
+	st.push(u);
 	while(!st.empty()){
-		int s=st.top();
-		int cnt=0;
-		for(int i=1;i<=n;i++){
-			if(a[s][i]==1) ++cnt;
-		}
-		if(cnt){
-			for(int i=1;i<=n;i++){
-				if(a[s][i]==1){
-					st.push(i);
-					a[s][i]=0;
-					a[i][s]=0;
-					break;
-				}
+		int i=st.top(), ok=0;
+		for(int j=1;j<=n;j++){
+			if(a[i][j]){
+				ok=1;
+				a[i][j]=0;
+				a[j][i]=0;
+				st.push(j);
+				break;
 			}
 		}
-		else{
+		if(!ok){
 			v.push_back(st.top());
 			st.pop();
 		}
 	}
-	for(int i=v.size()-1;i>=0;i--) cout << v[i] << " ";
-}
-int main() {
-	int t; cin >> t;
-	for(int i=1;i<=100;i++) chuaxet[i]=1;
-	if(t==1){
-		cin >> n;
-		for(int i=1;i<=n;i++){
-			int x; cin >> x;
-			for(int j=1;j<=x;j++){
-				int y; cin >> y;
-				a[i][y]=1;
-				b[i][y]=1;
-				b[y][i]=1;
-			}
-		}
-		map<int,int> mp, ma;
-		for(int i=1;i<=n;i++){
-			for(int j=1;j<=n;j++){
-				if(a[i][j]==1){
-					mp[i]++;
-					ma[j]++;
-				}
-			}
-		}
-		int cnt=0, cnt1=0, cnt2=0;
-		for(int i=1;i<=n;i++){
-			if(mp[i]==ma[i]) ++cnt;
-			else if(mp[i]-ma[i]==1) ++cnt1;
-			else if(ma[i]-mp[i]==1) ++cnt2;
-		}
-		if(BFS(1)==n){
-			if(cnt==n) cout << "1";
-		    else if(cnt1==1&&cnt2==1&&cnt==n-2) cout << "2";
-		    else cout << "0";
-		}
-		else if(BFS(1)!=n) cout << "0";
+	for(int i=v.size()-1;i>=0;i--){
+		cout << v[i] << " ";
 	}
-	else{
-		cin >> n;
+}
+int main(){
+	cin >> t >> n;
+	if(t==2) cin >> u;
+	for(int i=1;i<=n;i++){
 		int k; cin >> k;
-		for(int i=1;i<=n;i++){
+		for(int j=1;j<=k;j++){
 			int x; cin >> x;
-			for(int j=1;j<=x;j++){
-				int y; cin >> y;
-				a[i][y]=1;
-			}
+			a[i][x]=1;
+			b[i][x]=1;
+			b[x][i]=1;
 		}
-		EC(k);
-	}	
+	}
+	if(t==1) ktra();
+	else EC(u);
 }

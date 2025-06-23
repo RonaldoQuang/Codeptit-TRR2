@@ -29,13 +29,7 @@ int main(){
 	for(int i=1;i<=n;i++){
 		for(int j=1;j<=n;j++){
 			cin >> c[i][j];
-		}
-	}
-	for(int i=1;i<=n;i++){
-		for(int j=1;j<=n;j++){
-			if(c[i][j]==1){
-				a[i].push_back(j);
-			}
+			if(c[i][j]) a[i].push_back(j);
 		}
 	}
 	for(int i=1;i<=n;i++){

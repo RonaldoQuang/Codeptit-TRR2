@@ -1,9 +1,8 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int inf=1e9;
-int n, s, t;
+int n, s, t, truoc[101];
 vector<pair<int,int>> a[101];
-int truoc[101];
 vector<int> d(101,inf);
 void dijkstra(){
 	d[s]=0;
@@ -21,6 +20,8 @@ void dijkstra(){
 			}
 		}
 	}
+}
+void path(){
 	if(d[t]==inf) cout << 0;
 	else{
 		vector<int> v;
@@ -30,9 +31,7 @@ void dijkstra(){
 			t=truoc[t];
 		}
 		v.push_back(s);
-		for(int i=v.size()-1;i>=0;i--){
-			cout << v[i] << " ";
-		}
+		for(int i=v.size()-1;i>=0;i--) cout << v[i] << " ";
 	}
 }
 int main(){
@@ -41,9 +40,10 @@ int main(){
 	cin >> n >> s >> t;
 	for(int i=1;i<=n;i++){
 		for(int j=1;j<=n;j++){
-			int w; cin >> w;
-			if(w>0&&w<=50) a[i].push_back({j,w});
+			int x; cin >> x;
+			if(x>0&&x<=50) a[i].push_back({j,x});
 		}
 	}
 	dijkstra();
+	path();
 }

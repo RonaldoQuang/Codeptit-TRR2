@@ -1,41 +1,37 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-#define null -1
-int n, x, y, z, m=-1e9;
-int a[105][105], d[105][105], tsugi[105][105];
+const int null=-1;
+int n, s, t, x, y, a[101][101], d[101][101], tiep[101][101], z=-1e9;
 void floyd(){
 	for(int k=1;k<=n;k++){
-		for(int i=1;i<=n;i++){
-			for(int j=1;j<=n;j++){
-				if(d[i][j]>d[i][k]+d[k][j]){
-					d[i][j]=d[i][k]+d[k][j];
-					tsugi[i][j]=tsugi[i][k];
+		for(int u=1;u<=n;u++){
+			for(int v=1;v<=n;v++){
+				if(d[u][k]+d[k][v]<d[u][v]){
+					d[u][v]=d[u][k]+d[k][v];
+					tiep[u][v]=tiep[u][k];
 				}
 			}
 		}
 	}
 	for(int i=1;i<=n;i++){
 		for(int j=1;j<=n;j++){
-			if(i!=j&&d[i][j]>m&&d[i][j]!=1e4){
+			if(i!=j&&d[i][j]>z&&d[i][j]!=1e4){
+				z=d[i][j];
 				x=i;
 				y=j;
-				z=d[i][j];
-				m=d[i][j];
 			}
 		}
 	}
 }
 void path(){
-	if(tsugi[x][y]==null) cout << 0;
+	if(tiep[x][y]==null) cout << 0;
 	else{
 		cout << x << " " << y << " " << z << endl;
-		vector<int> v;
-		v.push_back(x);
 		while(x!=y){
-			x=tsugi[x][y];
-			v.push_back(x);
+			cout << x << " ";
+			x=tiep[x][y];
 		}
-		for(auto x:v) cout << x << " ";
+		cout << y;
 	}
 }
 int main(){
@@ -46,8 +42,8 @@ int main(){
 		for(int j=1;j<=n;j++){
 			cin >> a[i][j];
 			d[i][j]=a[i][j];
-			if(a[i][j]>0&&a[i][j]<=50) tsugi[i][j]=j;
-			else tsugi[i][j]=null;
+			if(a[i][j]>0&&a[i][j]<=50) tiep[i][j]=j;
+			else tiep[i][j]=null;
 		}
 	}
 	floyd();
